@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/firstFragment"
-        android:name="ru.mirea.prac2.FirstFragment"
+        android:name="ru.mirea.prac2.ui.counter.FirstFragment"
         android:label="fragment_first"
         tools:layout="@layout/fragment_first" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/secondFragment"
-        android:name="ru.mirea.prac2.SecondFragment"
+        android:name="ru.mirea.prac2.ui.counter.SecondFragment"
         android:label="fragment_second"
         tools:layout="@layout/fragment_second" >
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/thirdFragment"
-        android:name="ru.mirea.prac2.ThirdFragment"
+        android:name="ru.mirea.prac2.ui.counter.ThirdFragment"
         android:label="fragment_third"
         tools:layout="@layout/fragment_third" >
         <action
