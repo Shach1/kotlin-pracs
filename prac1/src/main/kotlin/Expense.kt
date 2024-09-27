@@ -20,16 +20,4 @@ class Expense(val _price: Int, private val _category: String, private val _date:
     {
         println("$date: Category - $category, Price: $price")
     }
-    fun getPrice(): Int
-    {
-        return price
-    }
-    fun getCategory(): String
-    {
-        return category
-    }
-    fun getDate(): String
-    {
-        return date
-    }
 }
