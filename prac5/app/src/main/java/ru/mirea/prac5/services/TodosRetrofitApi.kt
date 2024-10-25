@@ -11,8 +11,6 @@ interface TodosRetrofitApi
     @GET("/todos/{id}")
     suspend fun getTodoById(@Path("id") id: String): Response<TodoModel>
 
-    @GET("/todos")
+    @GET("/todos?limit=0")
     suspend fun getAllTodos(): Response<TodosModel>
-
-
 }

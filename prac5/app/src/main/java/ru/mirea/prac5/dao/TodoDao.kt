@@ -1,6 +1,5 @@
 package ru.mirea.prac5.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -10,8 +9,14 @@ import ru.mirea.prac5.entity.TodosEntity
 interface TodoDao
 {
     @Insert
-    fun insert(todo: TodosEntity)
+    suspend fun insert(todo: TodosEntity)
+
+    @Insert
+    suspend fun insertAll(todos: List<TodosEntity>)
 
     @Query("SELECT * FROM todos")
-    fun getAll(): LiveData<List<TodosEntity>>
+    suspend fun getAll(): List<TodosEntity>
+
+    @Query("DELETE FROM todos")
+    suspend fun deleteAll()
 }
