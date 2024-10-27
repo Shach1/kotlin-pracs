@@ -6,8 +6,7 @@ import retrofit2.http.Path
 import ru.mirea.prac5.model.TodoModel
 import ru.mirea.prac5.model.TodosModel
 
-interface TodosRetrofitApi
-{
+interface TodosRetrofitApi{
     @GET("/todos/{id}")
     suspend fun getTodoById(@Path("id") id: String): Response<TodoModel>
 

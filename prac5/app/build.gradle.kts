@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-kapt")
+    //hilt
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -67,4 +69,12 @@ dependencies {
     kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
+    //hilt
+    implementation("com.google.dagger:hilt-android:2.50")
+    kapt("com.google.dagger:hilt-android-compiler:2.50")
+}
+
+//hilt
+kapt {
+    correctErrorTypes = true
 }

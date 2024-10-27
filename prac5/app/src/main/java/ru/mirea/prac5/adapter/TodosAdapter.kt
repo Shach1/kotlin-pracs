@@ -1,4 +1,4 @@
-package ru.mirea.prac5
+package ru.mirea.prac5.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -6,8 +6,7 @@ import androidx.room.Query
 import ru.mirea.prac5.entity.TodosEntity
 
 @Dao
-interface TodoDao
-{
+interface TodoDao{
     @Insert
     suspend fun insert(todo: TodosEntity)
 

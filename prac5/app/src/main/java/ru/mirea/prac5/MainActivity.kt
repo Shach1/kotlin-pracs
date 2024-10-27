@@ -5,29 +5,33 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.room.Room
+import androidx.lifecycle.lifecycleScope
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.mirea.prac5.dao.TodoDao
-import ru.mirea.prac5.databese.MainDatabase
 import ru.mirea.prac5.databinding.ActivityMainBinding
 import ru.mirea.prac5.entity.TodosEntity
+import ru.mirea.prac5.inject.DatabaseHelper
+import ru.mirea.prac5.inject.RetrofitService
 import ru.mirea.prac5.services.TodosRetrofitApi
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityMainBinding
-    private lateinit var retrofitService: TodosRetrofitApi
-    private lateinit var todoDao: TodoDao
+    @Inject lateinit var retrofitService: RetrofitService
+    @Inject lateinit var dbHelper: DatabaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        Log.d("HILT", dbHelper.toString())
 
         binding.btGetAllTodos.setOnClickListener {
             loadAndSaveAllTodos()
@@ -50,22 +54,6 @@ class MainActivity : AppCompatActivity() {
         binding.btToViewActivity.setOnClickListener{
             startActivity(Intent(this, ViewActivity::class.java))
         }
-
-
-        // init Retrofit
-        val retrofit : Retrofit = Retrofit.Builder()
-            .baseUrl("https://dummyjson.com")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        retrofitService = retrofit.create(TodosRetrofitApi::class.java)
-
-        // init Database
-        val db = Room.databaseBuilder(
-            applicationContext,
-            MainDatabase::class.java,
-            "test"
-        ).build()
-        todoDao = db.todoDao()
     }
 
     private fun loadAndSaveAllTodos() {
@@ -94,10 +82,13 @@ class MainActivity : AppCompatActivity() {
 
             //Сохранение данных в базу данных
             try {
-                todoDao.deleteAll()
-                todoDao.insertAll(todosEntity)
-                Log.d("ROOM", "Table test contains ${todoDao.getAll()}")
-                Toast.makeText(applicationContext, "Successful", Toast.LENGTH_SHORT).show()
+                dbHelper.deleteAllTodos()
+                dbHelper.insertAllTodos(todosEntity)
+                Log.d("ROOM", "Table test contains ${dbHelper.getAllTodos()}")
+                //Toast.makeText(this@MainActivity, "Successful", Toast.LENGTH_SHORT).show()
+                lifecycleScope.launch(Dispatchers.Main) {
+                    Toast.makeText(this@MainActivity, "Successful", Toast.LENGTH_SHORT).show()
+                }
             } catch (e: Exception) {
                 Log.e("ROOM", "Error inserting todo", e)
             }
@@ -129,9 +120,12 @@ class MainActivity : AppCompatActivity() {
 
             //Сохранение данных в базу данных
             try {
-                todoDao.insert(todosEntity!!)
-                Log.d("ROOM", "Table test contains ${todoDao.getAll()}")
-                Toast.makeText(applicationContext, "Successful", Toast.LENGTH_SHORT).show()
+                dbHelper.insertTodo(todosEntity!!)
+                Log.d("ROOM", "Table test contains ${dbHelper.getAllTodos()}")
+                //Toast.makeText(applicationContext, "Successful", Toast.LENGTH_SHORT).show()
+                lifecycleScope.launch(Dispatchers.Main) {
+                    Toast.makeText(this@MainActivity, "Successful", Toast.LENGTH_SHORT).show()
+                }
             } catch (e: Exception) {
                 Log.e("ROOM", "Error inserting todo", e)
             }
@@ -141,9 +135,12 @@ class MainActivity : AppCompatActivity() {
     private fun deleteAllTodos() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                todoDao.deleteAll()
-                Log.d("ROOM", "Table test contains ${todoDao.getAll()}")
-                Toast.makeText(applicationContext, "Successful", Toast.LENGTH_SHORT).show()
+                dbHelper.deleteAllTodos()
+                Log.d("ROOM", "Table test contains ${dbHelper.getAllTodos()}")
+                //Toast.makeText(applicationContext, "Successful", Toast.LENGTH_SHORT).show()
+                lifecycleScope.launch(Dispatchers.Main) {
+                    Toast.makeText(this@MainActivity, "Successful", Toast.LENGTH_SHORT).show()
+                }
             } catch (e: Exception) {
                 Log.e("ROOM", "Error deleting todos", e)
             }
