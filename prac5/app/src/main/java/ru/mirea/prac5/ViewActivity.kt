@@ -32,14 +32,14 @@ class ViewActivity : AppCompatActivity() {
         setContentView(view)
         Log.d("HILT", dbHelper.toString())
 
+        binding.rvTodos.adapter = TodosAdapter(emptyList())
+        binding.rvTodos.layoutManager = LinearLayoutManager(this@ViewActivity)
 
         CoroutineScope(Dispatchers.IO).launch {
             val todos: List<TodosEntity> = dbHelper.getAllTodos()
 
             lifecycleScope.launch(Dispatchers.Main) {
-                val adapter = TodosAdapter(todos)
-                binding.rvTodos.layoutManager = LinearLayoutManager(this@ViewActivity)
-                binding.rvTodos.adapter = adapter
+                binding.rvTodos.adapter = TodosAdapter(todos)
             }
         }
     }
