@@ -25,11 +25,11 @@ class MainActivity : AppCompatActivity() {
         binding.btSave.setOnClickListener {
             val url = binding.etUrl.text.toString()
             val fileName = binding.etFileName.text.toString()
-            if(url.isNotEmpty() and fileName.isNotEmpty()) downloadImage(url, fileName)
+            if(url.isNotEmpty() and fileName.isNotEmpty()) downloadAndSetImage(url, fileName)
         }
     }
 
-    private fun downloadImage(url: String, fileName: String) {
+    private fun downloadAndSetImage(url: String, fileName: String) {
         CoroutineScope(Dispatchers.IO).launch {
             val response = ImageLoader().getImage(url)
 
